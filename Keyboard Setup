@@ -1,0 +1,157 @@
+function BlockObject({ text, index, rowIndex }) {
+        const [value, setValue] = React.useState(0)
+        const [scaleValue, setScaleValue] = React.useState(1.0)
+        const getBGColor = () => {
+            if (text.result == "absent") {
+                return colors.absent
+            } else if (text.result == "present") {
+                return colors.present
+            } else if (text.result == "correct") {
+                return colors.correct
+            } else {
+                return colors.none
+            }
+        }
+        const [bg, setBg] = React.useState(
+            store.blocksAnimated[rowIndex][index] == true
+                ? getBGColor()
+                : colors.none
+        )
+        let r = useMotionValue(0)
+        var ref = useRef()
+
+        const startAnim = () => {
+            r.set(0)
+            let start = 0
+            let end = -90
+
+            let controls = animate(start, end, {
+                duration: 0.25,
+                ease: "easeIn",
+                delay: 0.5 * index,
+                onUpdate: (v) => {
+                    setValue(v)
+                    if (Math.abs(v) >= 90) {
+                        setBg(getBGColor())
+                    }
+                },
+                onComplete: () => {
+                    start = -90
+                    end = 0
+                    animate(start, end, {
+                        duration: 0.25,
+                        ease: "easeIn",
+                        delay: 0.1,
+                        onUpdate: (v) => {
+                            setValue(v)
+                        },
+                        onComplete: () => {
+                            //console.log(v)
+                            controls.stop()
+                            setValue(0)
+                        },
+                    })
+                },
+            })
+        }
+
+        const startAnimScale = () => {
+            let start = 1.0
+            let end = 1.05
+
+            let scaleControls = animate(start, end, {
+                duration: 0.15,
+                ease: "circOut",
+                delay: 0.0,
+                onUpdate: (v) => {
+                    setScaleValue(v)
+                },
+                onComplete: () => {
+                    start = 1.05
+                    end = 1.0
+                    animate(start, end, {
+                        duration: 0.15,
+                        ease: "circOut",
+                        delay: 0.0,
+                        onUpdate: (v) => {
+                            setScaleValue(v)
+                        },
+                        onComplete: () => {
+                            scaleControls.stop()
+                            setScaleValue(1.0)
+                        },
+                    })
+                },
+            })
+        }
+
+        const onTap = () => {}
+
+        if (text.result != "none" && text.letter != "") {
+            if (store.blocksAnimated[rowIndex][index] == false) {
+                var _blocksAnimated = store.blocksAnimated
+                _blocksAnimated[rowIndex][index] = true
+                setStore({ blocksAnimated: _blocksAnimated })
+                startAnim()
+            }
+        }
+
+        useEffect(() => {
+            if (
+                text.letter != "" &&
+                index == store.currentColumnIndex - 1 &&
+                store.skipAnim == false &&
+                rowIndex == store.currentRowIndex
+            ) {
+                startAnimScale()
+            }
+        }, [])
+
+        var _fill = text.letter == "" ? {} : filled
+        var styles = {
+            ...squareStyle,
+            ...{
+                transform:
+                    "rotateX(" + value + "deg) scale(" + scaleValue + ")",
+                backgroundColor: bg,
+            },
+            ..._fill,
+        }
+
+        return (
+            <motion.div
+                ref={ref}
+                className={"tile"}
+                style={styles}
+                onTap={onTap}
+            >
+                <style>{css}</style>
+                {text.letter.toUpperCase()}
+            </motion.div>
+        )
+    }
+
+const squareStyle = {
+    margin: 0,
+    padding: 0,
+    color: "white",
+    fontWeight: 600,
+    borderRadius: 0,
+    borderColor: "#cdcdcd",
+    borderSize: "1px",
+    border: "1px solid rgb(131, 131, 131)",
+    backgroundColor: "#383838",
+    whiteSpace: "pre-wrap" as const,
+    flexShrink: 0,
+    width: "100%",
+    transformOrigin: "center",
+    display: "inline-flex",
+    justifyContent: "center",
+    alignItems: "center",
+    fontSize: 42,
+    maxWidth: 70,
+}
+
+const filled = {
+    border: "1px solid #fff",
+}
