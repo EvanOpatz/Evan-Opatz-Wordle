@@ -1,1 +1,53 @@
 
+// algorithm:
+// two for loops the first one checks if the letter in position is correct (correct)
+// second one checks if the letter is present in the rest of the word (present) or otherwise (absent)
+export function checkWord(word, currentWord) {
+   
+    // false is returned when the word is not in the dictionary and should invoke a shake
+    if (allWords.indexOf(word.toLowerCase()) == -1) {
+        return { valid: false }
+    } else {
+        var wordArr = word.toLowerCase().split("")
+        var targetWordArr = currentWord.split("")
+        var results = []
+        var isWon = 0
+        var isPresent = false
+        for (var i = 0; i < 5; i++) {
+            isPresent = false
+
+            if (wordArr[i] == targetWordArr[i]) {
+                results.push({
+                    letter: wordArr[i],
+                    skipAnim: false,
+                    result: "correct",
+                })
+
+                isWon += 1
+                continue
+            }
+            for (var j = 0; j < 5; j++) {
+                if (wordArr[i] == targetWordArr[j]) {
+                    results.push({
+                        letter: wordArr[i],
+                        skipAnim: false,
+                        result: "present",
+                    })
+                    isPresent = true
+                    break
+                }
+            }
+            if (isPresent == false) {
+                results.push({
+                    letter: wordArr[i],
+                    skipAnim: false,
+                    result: "absent",
+                })
+            }
+        }
+
+        var finalResult = { lines: results, valid: true, won: isWon == 5 }
+
+        return finalResult
+    }
+}
