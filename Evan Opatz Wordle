@@ -1,0 +1,75 @@
+import { createStore } from "https://framer.com/m/framer/store.js@^1.0.0"
+import { md5 } from "https://cdn.skypack.dev/pure-md5"
+import { _ } from "https://cdn.skypack.dev/lodash"
+import { Data } from "framer"
+import { allWords } from "https://assets.codepen.io/1581715/fivewords.js"
+
+export const globalStore = createStore({
+    background: "#0099FF",
+    darkMode: true,
+    squares: {
+        green: "🟩",
+        yellow: "🟨",
+        white: "⬜",
+    },
+    lines: [
+        [
+            { letter: "", skipAnim: false, result: "none" },
+            { letter: "", skipAnim: false, result: "none" },
+            { letter: "", skipAnim: false, result: "none" },
+            { letter: "", skipAnim: false, result: "none" },
+            { letter: "", skipAnim: false, result: "none" },
+        ],
+        [
+            { letter: "", skipAnim: false, result: "none" },
+            { letter: "", skipAnim: false, result: "none" },
+            { letter: "", skipAnim: false, result: "none" },
+            { letter: "", skipAnim: false, result: "none" },
+            { letter: "", skipAnim: false, result: "none" },
+        ],
+        [
+            { letter: "", skipAnim: false, result: "none" },
+            { letter: "", skipAnim: false, result: "none" },
+            { letter: "", skipAnim: false, result: "none" },
+            { letter: "", skipAnim: false, result: "none" },
+            { letter: "", skipAnim: false, result: "none" },
+        ],
+        [
+            { letter: "", skipAnim: false, result: "none" },
+            { letter: "", skipAnim: false, result: "none" },
+            { letter: "", skipAnim: false, result: "none" },
+            { letter: "", skipAnim: false, result: "none" },
+            { letter: "", skipAnim: false, result: "none" },
+        ],
+        [
+            { letter: "", skipAnim: false, result: "none" },
+            { letter: "", skipAnim: false, result: "none" },
+            { letter: "", skipAnim: false, result: "none" },
+            { letter: "", skipAnim: false, result: "none" },
+            { letter: "", skipAnim: false, result: "none" },
+        ],
+        [
+            { letter: "", skipAnim: false, result: "none" },
+            { letter: "", skipAnim: false, result: "none" },
+            { letter: "", skipAnim: false, result: "none" },
+            { letter: "", skipAnim: false, result: "none" },
+            { letter: "", skipAnim: false, result: "none" },
+        ],
+    ],
+    blocksAnimated: [
+        [false, false, false, false, false],
+        [false, false, false, false, false],
+        [false, false, false, false, false],
+        [false, false, false, false, false],
+        [false, false, false, false, false],
+        [false, false, false, false, false],
+    ],
+    skipAnim: false,
+    currentRowIndex: 0,
+    currentWord: "",
+    currentColumnIndex: 0,
+    wrongWord: false,
+    victory: false,
+    usedLetters: {},
+    latestGraph: "",
+})
