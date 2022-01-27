@@ -1,0 +1,32 @@
+// Block Row
+    function BlockRow({ rowData, rowIndex }) {
+        return (
+            <motion.div
+                style={{
+                    ...style,
+                    ...containerStyle,
+                    ...{ x: store.currentRowIndex == rowIndex ? valueX : 0 },
+                }}
+            >
+                {rowData.map((item, index) => (
+                    <BlockObject
+                        text={item}
+                        index={index}
+                        rowIndex={rowIndex}
+                    />
+                ))}
+            </motion.div>
+        )
+    }
+
+const containerStyle = {
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "shown",
+    display: "flex",
+    gridTemplateColumns: "repeat(5, 1fr)",
+    gridGap: "15px",
+    width: "100%",
+    //width: "500px",
+    justifyItems: "center",
+}
